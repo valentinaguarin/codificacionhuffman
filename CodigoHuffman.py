@@ -17,6 +17,29 @@ def CalculateFreq(data):
             symbols[item] += 1
     return symbols
 
+
+def Processing(node, value=''):
+    newValue = value + str(node.code)
+
+    if (node.left):
+        Processing(node.left, newValue)
+    if (node.right):
+        Processing(node.right, newValue)
+
+    if (not node.left and not node.right):
+        codes[node.symbol] = newValue
+
+    return codes
+
+
+def OutputEncoded(data, coding):
+    encodingOutput = []
+    for element in data:
+        encodingOutput.append(coding[element])
+
+    string = ''.join([str(item) for item in encodingOutput])
+    return string
+
 def FunctionEncoding(data):
     symbolWithProbs = CalculateFreq(data)
     symbols = symbolWithProbs.keys()
