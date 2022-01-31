@@ -7,7 +7,39 @@ class Nodes:
         self.right = right  
         self.code = ''  
               
-codes = dict() 
+codes = dict()
+
+def FunctionEncoding(data):
+    symbolWithProbs = CalculateFreq(data)
+    symbols = symbolWithProbs.keys()
+    probabilities = symbolWithProbs.values()
+
+    print("\nSymbols: ", symbols, "\n")
+
+    print("Probabilities: ", probabilities, "\n")
+
+    nodes = []
+
+    for symbol in symbols:
+        nodes.append(Nodes(symbolWithProbs.get(symbol), symbol))
+
+    while len(nodes) > 1:
+        nodes = sorted(nodes, key=lambda x: x.probability)
+        right = nodes[0]
+        left = nodes[1]
+        left.code = 0
+        right.code = 1
+
+        newNode = Nodes(left.probability + right.probability, left.symbol + right.symbol, left, right)
+
+        nodes.remove(left)
+        nodes.remove(right)
+        nodes.append(newNode)
+
+    functionEncoding = Processing(nodes[0])
+    print("Symbols with codes", functionEncoding, "\n")
+    encodedOutput = OutputEncoded(data, functionEncoding)
+    return encodedOutput, nodes[0]
 
 while True:
     try:
